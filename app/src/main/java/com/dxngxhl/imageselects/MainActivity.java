@@ -26,11 +26,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         imageSelectionView = findViewById(R.id.imageselectionview);
-        imageSelectionView.setNumColumns(3);
-        imageSelectionView.setMaxCount(5);
-        imageSelectionView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageSelectionView.setImageChoose(new ImageSelect(this));
-        imageSelectionView.setImageLoader(new ImageLoad());
+        imageSelectionView
+                .setMaxCount(9)
+                .setImageChoose(new ImageSelect(this))
+                .setImageLoader(new ImageLoad())
+                .setNumColumn(3)
+                .setScaleType(ImageView.ScaleType.CENTER_CROP)
+                .init();
+//        imageSelectionView.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -13,8 +13,8 @@
         android:src="@drawable/ic_image_select_add"/>
     <ImageView
         android:id="@+id/item_iamge_select_close"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:src="@drawable/ic_close"
         android:layout_alignParentRight="true"/>
 </RelativeLayout>

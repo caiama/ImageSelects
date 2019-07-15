@@ -34,9 +34,10 @@ import java.util.List;
  *
  */
 public class ImageSelectionView extends GridView {
+    Context mContxt;
     public final static String SELECTION_TAG = "ADD";
     //最大可选择张数
-    private int maxCount = 3,numCols = 3;
+    private int maxCount = 3,numColumns2;
     //图片
     List<String> imagePaths = new ArrayList<>();
     List<String> returnPaths = new ArrayList<>();
@@ -48,33 +49,49 @@ public class ImageSelectionView extends GridView {
     ImageLoader imageLoader;
     //
     ImageChoose imageChoose;
+    //
+    private ImageView.ScaleType scaleType;
+    private int imageAddRous = R.drawable.ic_image_select_add,closeRous = R.drawable.ic_close;
+    private int imageWidth;
     public ImageSelectionView(Context context) {
         super(context);
-        init(context);
+        mContxt = context;
     }
 
     public ImageSelectionView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        mContxt = context;
     }
 
     public ImageSelectionView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        mContxt = context;
     }
 //
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public ImageSelectionView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context);
+        mContxt = context;
     }
 
-    public void init(Context context){
+    /**
+     * 初始化
+     */
+    public void init(){
         setBackgroundColor(Color.WHITE);
         imagePaths.add(SELECTION_TAG);
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        imageSelectAdapter = new ImageSelectAdapter(imagePaths,context,dm.widthPixels / numCols);
+        DisplayMetrics dm = mContxt.getResources().getDisplayMetrics();
+        imageWidth = dm.widthPixels;
+        imageSelectAdapter = new ImageSelectAdapter(
+                imagePaths,
+                mContxt,
+                imageLoader,
+                scaleType,
+                imageAddRous,
+                closeRous,
+                (imageWidth - dip2px(mContxt,10 * numColumns2 * 2)) /numColumns2);
         setAdapter(imageSelectAdapter);
+
         setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -85,15 +102,6 @@ public class ImageSelectionView extends GridView {
                 }
             }
         });
-    }
-
-    /**
-     * 设置图片加载类
-     * @param loader
-     */
-    public void setImageLoader(ImageLoader loader) {
-        imageLoader = loader;
-        imageSelectAdapter.setImageLoader(imageLoader);
     }
 
     /**
@@ -125,24 +133,27 @@ public class ImageSelectionView extends GridView {
      * 设置最大图片数
      * @param maxCount：大于0
      */
-    public void setMaxCount(int maxCount) {
-        if (maxCount < 1) return;
+    public ImageSelectionView setMaxCount(int maxCount) {
+        if (maxCount < 1) maxCount = 1;
         this.maxCount = maxCount;
+        return this;
     }
-
+    /**
+     * 设置图片加载类
+     * @param loader
+     */
+    public ImageSelectionView setImageLoader(ImageLoader loader) {
+        imageLoader = loader;
+        return this;
+    }
 
     /**
-     *
-     * @param numColumns
+     *  设置图片选择
+     * @param imageChoose
      */
-    @Override
-    public void setNumColumns(int numColumns) {
-        numColumns = numColumns;
-        super.setNumColumns(numColumns);
-    }
-
-    public void  setImageAddRou(){
-
+    public ImageSelectionView setImageChoose(ImageChoose imageChoose) {
+        this.imageChoose = imageChoose;
+        return this;
     }
 
     /**
@@ -150,7 +161,7 @@ public class ImageSelectionView extends GridView {
      * @param rus
      */
     public void setImageAddResource(int rus){
-        imageSelectAdapter.setImageAddResource(rus);
+        imageAddRous = rus;
     }
 
     /**
@@ -158,22 +169,37 @@ public class ImageSelectionView extends GridView {
      * @param rus
      */
     public void setCloseResource(int rus){
-        imageSelectAdapter.setCloseResource(rus);
-    }
-
-    public void setScaleType(ImageView.ScaleType scaleType){
-        imageSelectAdapter.setScaleType(scaleType);
+        closeRous = rus;
     }
 
     /**
-     *  设置图片选择
-     * @param imageChoose
+     *
+     * @param scaletype
      */
-    public void setImageChoose(ImageChoose imageChoose) {
-        this.imageChoose = imageChoose;
+    public ImageSelectionView setScaleType(ImageView.ScaleType scaletype){
+        scaleType = scaletype;
+        return  this;
+    }
+
+    /**
+     *
+     * @param numColumns
+     */
+    public ImageSelectionView setNumColumn(int numColumns) {
+        super.setNumColumns(numColumns);
+        numColumns2 = numColumns;
+        return this;
     }
 
     public void setSelectionListener(ImageSelectionListener selectionListener) {
         this.selectionListener = selectionListener;
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 }
