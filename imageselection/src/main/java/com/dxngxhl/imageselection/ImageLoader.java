@@ -8,5 +8,6 @@ import android.widget.ImageView;
  * on 2019/7/12
  */
 public abstract class ImageLoader {
+    //加载gridview图片
     public abstract void imageLoad(Context context, Object path, ImageView imageView);
 }

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMaxCount(9)
                 .setImageChoose(new ImageSelect(this))
                 .setImageLoader(new ImageLoad())
-                .setNumColumn(3)
+                .setNumColumn(4)
                 .setScaleType(ImageView.ScaleType.CENTER_CROP)
                 .init();
 //        imageSelectionView.setScaleType(ImageView.ScaleType.CENTER_CROP);

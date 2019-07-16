@@ -1,2 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dxngxhl.imageselection" />
+    package="com.dxngxhl.imageselection" >
+
+    <application>
+        <activity android:name=".ImageToVIewActivity" />
+    </application>
+</manifest>

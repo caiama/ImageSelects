@@ -1,6 +1,7 @@
 package com.dxngxhl.imageselection;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -19,15 +20,24 @@ import java.util.List;
  * Created by Ma
  * on 2019/7/12
  *
+ * 必须
  * setImageLoader
  *
- * setImagePath
+ * setImageChoose
  *
- * setMaxCount
- *
+ * 选择图片后必须传
  * addImagePath()
  *
+ * 获取所有展示的图片
  * getImagePaths
+ *
+ * 选
+ * setMaxCount
+ * setNumColumn
+ *
+ * 修改默认图片和关闭默认图片
+ * setImageAddResource
+ *
  *
  * //setSelectionListener
  *
@@ -49,6 +59,8 @@ public class ImageSelectionView extends GridView {
     ImageLoader imageLoader;
     //
     ImageChoose imageChoose;
+    //
+    ImageToView imageToView;
     //
     private ImageView.ScaleType scaleType;
     private int imageAddRous = R.drawable.ic_image_select_add,closeRous = R.drawable.ic_close;
@@ -89,7 +101,8 @@ public class ImageSelectionView extends GridView {
                 scaleType,
                 imageAddRous,
                 closeRous,
-                (imageWidth - dip2px(mContxt,10 * numColumns2 * 2)) /numColumns2);
+                imageWidth,
+                numColumns2);
         setAdapter(imageSelectAdapter);
 
         setOnItemClickListener(new OnItemClickListener() {
@@ -98,6 +111,12 @@ public class ImageSelectionView extends GridView {
                 if (SELECTION_TAG.equals(imagePaths.get(position))){
                     if (imageChoose != null){
                         imageChoose.imageChoose(maxCount - (imagePaths.size() - 1));
+                    }
+                }else {
+                    if (imageToView != null){
+                        imageToView.imageToView(mContxt,imagePaths.get(position));
+                    }else {
+                        mContxt.startActivity(new Intent(mContxt,ImageToVIewActivity.class).putExtra("path",imagePaths.get(position)));
                     }
                 }
             }
@@ -146,7 +165,10 @@ public class ImageSelectionView extends GridView {
         imageLoader = loader;
         return this;
     }
-
+    public ImageSelectionView setImageToView(ImageToView toView){
+        imageToView = toView;
+        return this;
+    }
     /**
      *  设置图片选择
      * @param imageChoose
@@ -160,16 +182,18 @@ public class ImageSelectionView extends GridView {
      * 设置加号的图片
      * @param rus
      */
-    public void setImageAddResource(int rus){
+    public ImageSelectionView setImageAddResource(int rus){
         imageAddRous = rus;
+        return this;
     }
 
     /**
      * 设置关闭（删除图片）
      * @param rus
      */
-    public void setCloseResource(int rus){
+    public ImageSelectionView setCloseResource(int rus){
         closeRous = rus;
+        return this;
     }
 
     /**
@@ -191,15 +215,9 @@ public class ImageSelectionView extends GridView {
         return this;
     }
 
-    public void setSelectionListener(ImageSelectionListener selectionListener) {
-        this.selectionListener = selectionListener;
-    }
+//    public void setSelectionListener(ImageSelectionListener selectionListener) {
+//        this.selectionListener = selectionListener;
+//    }
 
-    /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
-    public static int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
+
 }
