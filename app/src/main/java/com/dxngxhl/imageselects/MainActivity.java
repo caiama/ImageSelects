@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.dxngxhl.imageselection.ImageSelectionView;
 import com.zhihu.matisse.Matisse;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.e("fffffffffff",imageSelectionView.getImagePaths().toString());
+                Toast.makeText(MainActivity.this, imageSelectionView.getImagePaths().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMaxCount(9)
                 .setImageChoose(new ImageSelect(this))
                 .setImageLoader(new ImageLoad())
-                .setNumColumn(4)
+                .setNumColumn(3)
                 .setScaleType(ImageView.ScaleType.CENTER_CROP)
                 .init();
 //        imageSelectionView.setScaleType(ImageView.ScaleType.CENTER_CROP);
