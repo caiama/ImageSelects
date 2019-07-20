@@ -95,7 +95,7 @@ public class ImageSelectAdapter extends BaseAdapter {
                 }
             });
             if (imageLoader != null){
-                imageLoader.imageLoad(context,ImageSelectionView.SELECTION_TAG.equals(images.get(position))?R.drawable.ic_image_select_add:images.get(position),viewHolder.imageView);
+                imageLoader.imageLoad(context,ImageSelectionView.SELECTION_TAG.equals(images.get(position))?imageAddRous:images.get(position),viewHolder.imageView);
             }
         }
 
