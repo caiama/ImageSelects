@@ -227,6 +227,11 @@ public class ImageSelectionView extends GridView {
         return this;
     }
 
+    public void clear(){
+        imagePaths.clear();
+        imagePaths.add(SELECTION_TAG);
+        imageSelectAdapter.notifyDataSetChanged();
+    }
 //    public void setSelectionListener(ImageSelectionListener selectionListener) {
 //        this.selectionListener = selectionListener;
 //    }
