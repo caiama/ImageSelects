@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("ffffffff" ,"  =  " + Matisse.obtainPathResult(data));
             //清理前三个图片，(第四个是video)
 
-            imageSelectionView.addImagePath(Matisse.obtainPathResult(data));
+            imageSelectionView.addImagePaths(Matisse.obtainPathResult(data));
             //不压缩时
             /**
              for (int i = 0; i < imageCaches.size(); i++) {

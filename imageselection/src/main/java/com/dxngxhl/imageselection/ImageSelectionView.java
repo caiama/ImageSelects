@@ -124,13 +124,25 @@ public class ImageSelectionView extends GridView {
     }
 
     /**
-     * 添加图片(从外部)
+     * 添加图片s(从外部)
      * @param list
      */
-    public void addImagePath(List<String> list){
+    public void addImagePaths(List<String> list){
         for (int i = 0; i < list.size(); i++) {
             imagePaths.add(imagePaths.size() - 1,list.get(i));
         }
+        if (imagePaths.size() > maxCount){
+            imagePaths.remove(SELECTION_TAG);
+        }
+        imageSelectAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 添加图片(从外部)
+     * @param path
+     */
+    public void addImagePath(String path){
+        imagePaths.add(imagePaths.size() - 1,path);
         if (imagePaths.size() > maxCount){
             imagePaths.remove(SELECTION_TAG);
         }
