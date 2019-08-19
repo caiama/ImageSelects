@@ -13,4 +13,5 @@ public interface ImageChoose extends Serializable {
      * @param num:剩余可选择图片张数
      */
     void imageChoose(int num);
+    void videoChoose();
 }

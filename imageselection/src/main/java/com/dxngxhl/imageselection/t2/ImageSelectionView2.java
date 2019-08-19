@@ -1,4 +1,4 @@
-package com.dxngxhl.imageselection;
+package com.dxngxhl.imageselection.t2;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,11 +7,16 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import com.dxngxhl.imageselection.ImageChoose;
+import com.dxngxhl.imageselection.ImageLoader;
+import com.dxngxhl.imageselection.ImageToVIewActivity;
+import com.dxngxhl.imageselection.ImageToView;
+import com.dxngxhl.imageselection.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,18 +48,19 @@ import java.util.List;
  *
  *
  */
-public class ImageSelectionView extends GridView {
+public class ImageSelectionView2 extends GridView {
     Context mContxt;
-    public final static String SELECTION_TAG = "ADD";
+//    public final static String SELECTION_TAG = "ADD";
     //最大可选择张数
     private int maxCount = 3,numColumns2;
     //图片
-    List<String> imagePaths = new ArrayList<>();
-    List<String> returnPaths = new ArrayList<>();
+    List<Bean> imagePaths = new ArrayList<>();
+    List<Bean> returnPathBeans = new ArrayList<>();
     //回调
-    ImageSelectionListener selectionListener;
+    ImageSelectionListener2 selectionListener;
+    RemoveListener removeListener;
     //
-    ImageSelectAdapter imageSelectAdapter;
+    ImageSelectAdapter2 imageSelectAdapter;
     //
     ImageLoader imageLoader;
     //
@@ -63,25 +69,26 @@ public class ImageSelectionView extends GridView {
     ImageToView imageToView;
     //
     private ImageView.ScaleType scaleType;
-    private int imageAddRous = R.drawable.ic_image_select_add,closeRous = R.drawable.ic_close;
+    private int imageAddRous = R.drawable.ic_image_select_add,videoAddRous = R.drawable.ic_video_select,closeRous = R.drawable.ic_close;
     private int imageWidth;
-    public ImageSelectionView(Context context) {
+    Bean addBean = new Bean(null,false);
+    public ImageSelectionView2(Context context) {
         super(context);
         mContxt = context;
     }
 
-    public ImageSelectionView(Context context, AttributeSet attrs) {
+    public ImageSelectionView2(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContxt = context;
     }
 
-    public ImageSelectionView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ImageSelectionView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContxt = context;
     }
 //
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public ImageSelectionView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ImageSelectionView2(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         mContxt = context;
     }
@@ -91,15 +98,17 @@ public class ImageSelectionView extends GridView {
      */
     public void init(){
         setBackgroundColor(Color.WHITE);
-        imagePaths.add(SELECTION_TAG);
+        imagePaths.add(addBean);
         DisplayMetrics dm = mContxt.getResources().getDisplayMetrics();
         imageWidth = dm.widthPixels;
-        imageSelectAdapter = new ImageSelectAdapter(
+        imageSelectAdapter = new ImageSelectAdapter2(
                 imagePaths,
                 mContxt,
                 imageLoader,
                 scaleType,
+                addBean,
                 imageAddRous,
+                videoAddRous,
                 closeRous,
                 imageWidth,
                 numColumns2);
@@ -108,15 +117,17 @@ public class ImageSelectionView extends GridView {
         setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (SELECTION_TAG.equals(imagePaths.get(position))){
-                    if (imageChoose != null){
+                if (imagePaths.get(position).getImagePath() == null){
+                    if (imagePaths.get(position).isVideo()){
+                        imageChoose.videoChoose();
+                    }else {
                         imageChoose.imageChoose(maxCount - (imagePaths.size() - 1));
                     }
                 }else {
                     if (imageToView != null){
-                        imageToView.imageToView(mContxt,imagePaths.get(position));
+                        imageToView.imageToView(mContxt,imagePaths.get(position).getImagePath());
                     }else {
-                        mContxt.startActivity(new Intent(mContxt,ImageToVIewActivity.class).putExtra("path",imagePaths.get(position)));
+                        mContxt.startActivity(new Intent(mContxt,ImageToVIewActivity.class).putExtra("path",imagePaths.get(position).getImagePath()));
                     }
                 }
             }
@@ -127,25 +138,44 @@ public class ImageSelectionView extends GridView {
      * 添加图片s(从外部)
      * @param list
      */
-    public void addImagePaths(List<String> list){
+    public void addImagePaths(List<Bean> list){
         for (int i = 0; i < list.size(); i++) {
             imagePaths.add(imagePaths.size() - 1,list.get(i));
         }
         if (imagePaths.size() > maxCount){
-            imagePaths.remove(SELECTION_TAG);
+            imagePaths.remove(addBean);
         }
         imageSelectAdapter.notifyDataSetChanged();
     }
 
     /**
      * 添加图片(从外部)
-     * @param path
+     * @param bean
      */
-    public void addImagePath(String path){
-        imagePaths.add(imagePaths.size() - 1,path);
+    public void addImagePath(Bean bean){
+        imagePaths.add(imagePaths.size() - 1,bean);
         if (imagePaths.size() > maxCount){
-            imagePaths.remove(SELECTION_TAG);
+            imagePaths.remove(addBean);
         }
+        imageSelectAdapter.notifyDataSetChanged();
+    }
+
+    public void addImagePath(Bean bean,int position){
+        imagePaths.add(position,bean);
+        if (imagePaths.size() > maxCount){
+            imagePaths.remove(addBean);
+        }
+        imageSelectAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 更新
+     * @param bean
+     * @param position
+     */
+    public void updateImagePath(Bean bean,int position){
+        imagePaths.remove(position);
+        imagePaths.add(position,bean);
         imageSelectAdapter.notifyDataSetChanged();
     }
 
@@ -153,18 +183,18 @@ public class ImageSelectionView extends GridView {
      * 获取所有图片地址
      * @return
      */
-    public List<String> getImagePaths() {
-        returnPaths.clear();
-        returnPaths.addAll(imagePaths);
-        returnPaths.remove(SELECTION_TAG);
-        return returnPaths;
+    public List<Bean> getImagePaths() {
+        returnPathBeans.clear();
+        returnPathBeans.addAll(imagePaths);
+        returnPathBeans.remove(addBean);
+        return returnPathBeans;
     }
 
     /**
      * 设置最大图片数
      * @param maxCount：大于0
      */
-    public ImageSelectionView setMaxCount(int maxCount) {
+    public ImageSelectionView2 setMaxCount(int maxCount) {
         if (maxCount < 1) maxCount = 1;
         this.maxCount = maxCount;
         return this;
@@ -173,11 +203,11 @@ public class ImageSelectionView extends GridView {
      * 设置图片加载类
      * @param loader
      */
-    public ImageSelectionView setImageLoader(ImageLoader loader) {
+    public ImageSelectionView2 setImageLoader(ImageLoader loader) {
         imageLoader = loader;
         return this;
     }
-    public ImageSelectionView setImageToView(ImageToView toView){
+    public ImageSelectionView2 setImageToView(ImageToView toView){
         imageToView = toView;
         return this;
     }
@@ -185,7 +215,7 @@ public class ImageSelectionView extends GridView {
      *  设置图片选择
      * @param imageChoose
      */
-    public ImageSelectionView setImageChoose(ImageChoose imageChoose) {
+    public ImageSelectionView2 setImageChoose(ImageChoose imageChoose) {
         this.imageChoose = imageChoose;
         return this;
     }
@@ -194,8 +224,13 @@ public class ImageSelectionView extends GridView {
      * 设置加号的图片
      * @param rus
      */
-    public ImageSelectionView setImageAddResource(int rus){
+    public ImageSelectionView2 setImageAddResource(int rus){
         imageAddRous = rus;
+        return this;
+    }
+
+    public ImageSelectionView2 setVideoAddRous(int videoAddRous) {
+        this.videoAddRous = videoAddRous;
         return this;
     }
 
@@ -203,7 +238,7 @@ public class ImageSelectionView extends GridView {
      * 设置关闭（删除图片）
      * @param rus
      */
-    public ImageSelectionView setCloseResource(int rus){
+    public ImageSelectionView2 setCloseResource(int rus){
         closeRous = rus;
         return this;
     }
@@ -212,7 +247,7 @@ public class ImageSelectionView extends GridView {
      *
      * @param scaletype
      */
-    public ImageSelectionView setScaleType(ImageView.ScaleType scaletype){
+    public ImageSelectionView2 setScaleType(ImageView.ScaleType scaletype){
         scaleType = scaletype;
         return  this;
     }
@@ -221,7 +256,7 @@ public class ImageSelectionView extends GridView {
      *
      * @param numColumns
      */
-    public ImageSelectionView setNumColumn(int numColumns) {
+    public ImageSelectionView2 setNumColumn(int numColumns) {
         super.setNumColumns(numColumns);
         numColumns2 = numColumns;
         return this;
@@ -229,13 +264,17 @@ public class ImageSelectionView extends GridView {
 
     public void clear(){
         imagePaths.clear();
-        imagePaths.add(SELECTION_TAG);
+        imagePaths.add(addBean);
         imageSelectAdapter.notifyDataSetChanged();
     }
-//    public void setSelectionListener(ImageSelectionListener selectionListener) {
-//        this.selectionListener = selectionListener;
-//    }
+    public void setSelectionListener(ImageSelectionListener2 selectionListener) {
+        this.selectionListener = selectionListener;
+    }
 
+    public void setRemoveListener(RemoveListener listener) {
+        this.removeListener = listener;
+        imageSelectAdapter.setRemoveListener(removeListener);
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

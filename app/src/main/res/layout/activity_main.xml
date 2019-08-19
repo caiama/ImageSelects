@@ -1,22 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp"
-    tools:context=".MainActivity">
-
-    <com.dxngxhl.imageselection.ImageSelectionView
-        android:id="@+id/imageselectionview"
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:numColumns="4"
-        android:background="@color/colorAccent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/getimages"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="获取现有图片地址"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:context=".MainActivity">
+
+        <com.dxngxhl.imageselection.ImageSelectionView
+            android:id="@+id/imageselectionview"
+            android:layout_width="match_parent"
+            android:numColumns="4"
+            android:background="@color/colorAccent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/getimages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取现有图片地址"/>
+
+        <com.dxngxhl.imageselection.t2.ImageSelectionView2
+            android:id="@+id/imageselectionview2"
+            android:layout_width="match_parent"
+            android:numColumns="4"
+            android:background="@color/colorAccent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/getimages2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取现有图片地址"/>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

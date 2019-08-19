@@ -42,6 +42,11 @@ public class ImageSelect implements ImageChoose {
         }
     }
 
+    @Override
+    public void videoChoose() {
+        Toast.makeText(activity, "sssss", Toast.LENGTH_SHORT).show();
+    }
+
     public void imageChoose(FragmentActivity act,int num) {
         maxSelectable = num;
         activity = act;
