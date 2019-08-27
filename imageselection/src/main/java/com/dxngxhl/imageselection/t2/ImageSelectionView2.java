@@ -124,10 +124,12 @@ public class ImageSelectionView2 extends GridView {
                         imageChoose.imageChoose(maxCount - (imagePaths.size() - 1));
                     }
                 }else {
-                    if (imageToView != null){
-                        imageToView.imageToView(mContxt,imagePaths.get(position).getImagePath());
-                    }else {
-                        mContxt.startActivity(new Intent(mContxt,ImageToVIewActivity.class).putExtra("path",imagePaths.get(position).getImagePath()));
+                    if (!imagePaths.get(position).isVideo()){
+                        if (imageToView != null){
+                            imageToView.imageToView(mContxt,imagePaths.get(position).getImagePath());
+                        }else {
+                            mContxt.startActivity(new Intent(mContxt,ImageToVIewActivity.class).putExtra("path",imagePaths.get(position).getImagePath()));
+                        }
                     }
                 }
             }

@@ -72,6 +72,7 @@ public class ImageSelectAdapter2 extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_image_select,null);
             viewHolder.imageView = convertView.findViewById(R.id.item_iamge_select_image);
             viewHolder.imageClose = convertView.findViewById(R.id.item_iamge_select_close);
+            viewHolder.isVideo = convertView.findViewById(R.id.item_iamge_select_isvideo);
             convertView.setTag(viewHolder);
         }
         if (convertView != null && isNoInit && parent.getWidth() > 0){
@@ -85,13 +86,18 @@ public class ImageSelectAdapter2 extends BaseAdapter {
             if (scaleType != null){
                 viewHolder.imageView.setScaleType(scaleType);
             }
-            viewHolder.imageView.setImageResource(imageAddRous);
             //
+            viewHolder.imageView.setImageResource(imageAddRous);
             viewHolder.imageClose.setImageResource(closeRous);
             if (images.get(position).getImagePath() == null){
                 viewHolder.imageClose.setVisibility(View.GONE);
             }else {
                 viewHolder.imageClose.setVisibility(View.VISIBLE);
+            }
+            if (images.get(position).isVideo() && images.get(position).getImagePath() != null){
+                viewHolder.isVideo.setVisibility(View.VISIBLE);
+            }else {
+                viewHolder.isVideo.setVisibility(View.GONE);
             }
             viewHolder.imageClose.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,7 +135,7 @@ public class ImageSelectAdapter2 extends BaseAdapter {
         return convertView;
     }
     class ViewHolder{
-        ImageView imageView,imageClose;
+        ImageView imageView,imageClose,isVideo;
     }
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
