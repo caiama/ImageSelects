@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
                 .setNumColumn(4)
                 .setScaleType(ImageView.ScaleType.CENTER_CROP)
                 .init();
-
+        //设置背景色
+        imageSelectionView.setBackgroundResource(R.color.colorPrimary);
         //   sdfsdfsfs 22222222222222
         findViewById(R.id.getimages2).setOnClickListener(new View.OnClickListener() {
             @Override
