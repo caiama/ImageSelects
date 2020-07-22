@@ -2,21 +2,20 @@ package com.dxngxhl.imageselects;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.dxngxhl.imageselection.ImageSelectionView;
-import com.dxngxhl.imageselection.t2.Bean;
-import com.dxngxhl.imageselection.t2.ImageSelectionListener2;
-import com.dxngxhl.imageselection.t2.ImageSelectionView2;
+import com.dxngxhl.imgselector.ImageSelectorView;
+import com.dxngxhl.imgselector.v2.Bean;
+import com.dxngxhl.imgselector.v2.ImageSelectionView2;
 import com.zhihu.matisse.Matisse;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageSelectionView imageSelectionView;
+    ImageSelectorView imageSelectionView;
     ImageSelectionView2 imageSelectionView2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         imageSelectionView
                 .setMaxCount(9)
                 .setImageChoose(new ImageSelect(this))
-                .setImageLoader(new ImageLoad())
+                .setImgLoader(new ImageLoad())
                 .setNumColumn(4)
                 .setScaleType(ImageView.ScaleType.CENTER_CROP)
                 .init();

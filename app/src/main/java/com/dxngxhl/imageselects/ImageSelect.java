@@ -2,11 +2,11 @@ package com.dxngxhl.imageselects;
 
 import android.Manifest;
 import android.content.pm.ActivityInfo;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import android.widget.Toast;
 
-import com.dxngxhl.imageselection.ImageChoose;
+import com.dxngxhl.imgselector.itfc.ImgChooseItfc;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -19,7 +19,7 @@ import io.reactivex.functions.Consumer;
  * Created by Ma
  * on 2019/7/14
  */
-public class ImageSelect implements ImageChoose {
+public class ImageSelect implements ImgChooseItfc {
     FragmentActivity activity;
     Fragment fragment;
     public int maxSelectable;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,7 +12,7 @@
         android:padding="10dp"
         tools:context=".MainActivity">
 
-        <com.dxngxhl.imageselection.ImageSelectionView
+        <com.dxngxhl.imgselector.ImageSelectorView
             android:id="@+id/imageselectionview"
             android:layout_width="match_parent"
             android:numColumns="4"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="获取现有图片地址"/>
 
-        <com.dxngxhl.imageselection.t2.ImageSelectionView2
+        <com.dxngxhl.imgselector.v2.ImageSelectionView2
             android:id="@+id/imageselectionview2"
             android:layout_width="match_parent"
             android:numColumns="4"
@@ -36,4 +36,4 @@
             android:layout_height="wrap_content"
             android:text="获取现有图片地址"/>
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>
